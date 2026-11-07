@@ -90,68 +90,63 @@
     </div>
 </section>
 
-
 <script>
+document.addEventListener("DOMContentLoaded", function () {
 
-    document.addEventListener("DOMContentLoaded", function () {
+    const tableId = "{{ table_id|default:''|escapejs }}";
+    localStorage.setItem("table_id", tableId);
 
-        localStorage.setItem("table_id", {{table_id}})
+    const buttons = document.querySelectorAll("[data-add-to-cart]");
 
-        const buttons = document.querySelectorAll("[data-add-to-cart]");
+    buttons.forEach(button => {
 
-        buttons.forEach(button => {
+        button.addEventListener("click", function () {
 
-            button.addEventListener("click", function () {
+            const id = this.dataset.id;
+            const name = this.dataset.name;
+            const price = this.dataset.price;
 
-                const id = this.dataset.id;
-                const name = this.dataset.name;
-                const price = this.dataset.price;
+            let cart = JSON.parse(
+                localStorage.getItem("menuCart") || "[]"
+            );
 
-                // Get existing cart
-                let cart = JSON.parse(
-                    localStorage.getItem("menuCart") || "[]"
-                );
+            const existingItem = cart.find(item => item.id === id);
 
-                // Find existing item
-                const existingItem = cart.find(item => item.id === id);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: id,
+                    name: name,
+                    price: price,
+                    quantity: 1
+                });
+            }
 
-                if (existingItem) {
-                    // Increase quantity
-                    existingItem.quantity += 1;
-                } else {
-                    // Add new item
-                    cart.push({
-                        id: id,
-                        name: name,
-                        price: price,
-                        quantity: 1
-                    });
-                }
+            localStorage.setItem("menuCart", JSON.stringify(cart));
 
-                // Save cart
-                localStorage.setItem("menuCart", JSON.stringify(cart));
+            console.log("Item added:", cart);
 
-                // Update navbar cart count
+            // Navbar function exists only if defined
+            if (typeof updateCartCount === "function") {
                 updateCartCount();
+            }
 
-                // Visual feedback
-                const originalText = this.textContent;
-                this.textContent = "Added!";
-                this.classList.replace("bg-blue-600", "bg-green-600");
+            const originalText = this.textContent;
 
-                setTimeout(() => {
-                    this.textContent = originalText;
-                    this.classList.replace("bg-green-600", "bg-blue-600");
-                }, 1000);
+            this.textContent = "Added!";
+            this.classList.replace("bg-blue-600", "bg-green-600");
 
-                console.log("Cart:", cart);
-
-            });
+            setTimeout(() => {
+                this.textContent = originalText;
+                this.classList.replace("bg-green-600", "bg-blue-600");
+            }, 1000);
 
         });
 
     });
 
+});
 </script>
 
 {% endblock content %}
