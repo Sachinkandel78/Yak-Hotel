@@ -94,7 +94,8 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     const tableId = "{{ table_id|default:''|escapejs }}";
-    localStorage.setItem("table_id", tableId);
+    localStorage.setItem("table_id",tableId); 
+    //yo table id chai uta views bata pathako ho key value garera 
 
     const buttons = document.querySelectorAll("[data-add-to-cart]");
 

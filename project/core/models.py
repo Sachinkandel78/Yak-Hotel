@@ -25,7 +25,7 @@ class Order(models.Model):
         SERVED = 'S', 'Served'
 
     table = models.ForeignKey(Table, on_delete=models.PROTECT)
-    total_price = models.DecimalField()
+    total = models.DecimalField()
     status = models.CharField(max_length=1, choices=StatusChoices , default=StatusChoices.PREPARING) 
 
     def __str__(self):
@@ -35,6 +35,7 @@ class OrderItem(models.Model):
     menuitem = models.ForeignKey(MenuItem, on_delete=models.PROTECT)
     quantity = models.IntegerField(default=1)
     total = models.DecimalField()
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f"{self.menuitem} x {self.quantity} = {self.total}"
