@@ -11,7 +11,6 @@ def home_view(request):
 def about_view(request):
     return render(request, "core/about-us.html")
 
-# auto get request hunxa : jasto kasailey about_view magxa vaney hami about page render garera dinxam
 
 def menu_view(request, table_id):
     menu_items = MenuItem.objects.all()
@@ -33,34 +32,64 @@ def cart_view(request):
 
 
 def order_view(request):
+
     if request.method == "POST":
+
         menu_cart = json.loads(request.POST.get("menuCart"))
-        
-        
-        # print("menu cart", type(menu_cart))
+
         table_id = request.POST.get("table_id")
-        # print(menu_cart)
-        # print(table_id)
-        
+
         order = Order.objects.create(table_id=table_id, total=0)
-        # {"id":"1","name":"Momo","price":"120","quantity":2}
+
         order_total = 0
+
         for item in menu_cart:
+
             item_id = item.get("id")
             menu_item = MenuItem.objects.get(id=item_id)
-            # print(menu_item, menu_item.price)
-            item_total = item.get("quantity")*menu_item.price
+
+            item_total = item.get("quantity") * menu_item.price
+
             order_item = OrderItem.objects.create(
-                menuitem = menu_item,
-                quantity = item.get("quantity"),
-                total = item_total,
-                order = order
+                menuitem=menu_item,
+                quantity=item.get("quantity"),
+                total=item_total,
+                order=order
             )
+
             order_total += order_item.total
 
         order.total = order_total
         order.save()
 
+        order_ids = request.session.get('order_ids', [])
+        order_ids.append(order.id)
+
+        request.session['order_ids'] = order_ids
+
         return JsonResponse({
             'order_id': order.id
         })
+
+    else:
+
+        table_id = request.session['table_id']
+
+        orders = Order.objects.filter(
+            id__in=request.session.get('order_ids', [])
+        )
+
+        return render(request, "core/order-list.html", {
+            'table_id': table_id,
+            'orders': orders
+        })
+
+def order_status_view(request, order_id):
+    order = Order.objects.get(id=order_id)
+
+    return JsonResponse({
+        'order_id': order.id,
+        'status': order.status,
+        'status_display': order.get_status_display()
+    })
+    

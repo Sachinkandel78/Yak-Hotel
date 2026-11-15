@@ -26,7 +26,7 @@ class Order(models.Model):
 
     table = models.ForeignKey(Table, on_delete=models.PROTECT)
     total = models.DecimalField()
-    status = models.CharField(max_length=1, choices=StatusChoices , default=StatusChoices.PREPARING) 
+    status = models.CharField(max_length =1, choices=StatusChoices , default=StatusChoices.PREPARING) 
 
     def __str__(self):
         return f"{self.table} - {self.status}"
