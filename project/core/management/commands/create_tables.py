@@ -30,5 +30,4 @@ class Command(BaseCommand):
                     
             
         self.stdout.write(self.style.SUCCESS(f'Done. {count} tables created.'))   
-
     # yo use garna terminal ma command run garna parcha: python manage.py create_tables -n 10
