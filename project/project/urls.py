@@ -21,7 +21,7 @@ urlpatterns = [
     path("order/", order_view, name="order-page"),
     path("order/status/<order_id>/", order_status_view, name="order-status-api"),
     
-    # path("accounts/", include("accounts.urls"))
+    path("accounts/", include("accounts.urls"))
 ]
 
 if settings.DEBUG:
