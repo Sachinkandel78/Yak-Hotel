@@ -7,6 +7,7 @@ from core.views import (home_view,
                         cart_view,
                         order_view,
                         order_status_view,
+                        payment_view,
                         
                         )
 from django.conf import settings
@@ -20,7 +21,7 @@ urlpatterns = [
     path("cart/", cart_view, name="cart-page"),
     path("order/", order_view, name="order-page"),
     path("order/status/<order_id>/", order_status_view, name="order-status-api"),
-    
+    path("payment/", payment_view, name="payment-page"),
     path("accounts/", include("accounts.urls"))
 ]
 

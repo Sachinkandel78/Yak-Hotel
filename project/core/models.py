@@ -44,5 +44,12 @@ class OrderItem(models.Model):
     
     def __str__(self):
         return f"{self.menuitem} x {self.quantity} = {self.total}"
-    
-    
+
+
+class Payment(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    amount = models.IntegerField(default=0, help_text="(in paisa)")
+    order = models.OneToOneField(Order, on_delete=models.PROTECT, related_name="payment")
+
+    def __str__(self):
+        return self.id

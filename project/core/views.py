@@ -3,6 +3,7 @@ from .models import MenuItem, Order, OrderItem
 import json
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_POST
+from django.contrib import messages
 
 def home_view(request):
     return render(request, "core/home.html")
@@ -89,4 +90,18 @@ def order_status_view(request, order_id):
     })
     
 
-    
+def payment_view(request):
+    if request.method == "POST":
+        order_id = request.POST.get()
+        try:
+            order= Order.objects.get(pk=Order_id)
+        except Order.DoesNotExist
+            messages.error(request, "Payment initation failed")
+            return redirect("order-page")
+
+        payment, created = Payment.objects.get_or_create(
+            order = order,
+            defaults = {
+                "amount": order.total*100,
+            }
+        )
