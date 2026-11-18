@@ -9,6 +9,7 @@ def logout_view(request):
     logout(request)
     return redirect("login-page")
 
+
 def login_view(request):
     if request.method == "POST":
         email = request.POST.get('email')
@@ -32,7 +33,7 @@ def signup_view(request):
         if not sign_form.is_valid():
             return render(request, "accounts/signup.html", {
                 'form':sign_form
-              })
+            })
         
         # user registration
         user = User.objects.create_user(
