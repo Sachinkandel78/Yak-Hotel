@@ -118,6 +118,10 @@ MAILERS = {
         "BACKEND": "django.core.mail.backends.console.EmailBackend",
     },
 }
+# default ma mail chai pathaunna tara console/terminal ma print garxa
+DEFAULT_FROM_EMAIL = "noreply@example.com"  #yo chai jasto hamlai kun email bata aayo vanera dekhine mail id ho( From: noreply@example.com To: user inteface bata input garney ho)
+PASSWORD_RESET_TIMEOUT = 30*60 #30 minutes 
+
 
 MEDIA_ROOT = "media"
 MEDIA_URL = "media/"
