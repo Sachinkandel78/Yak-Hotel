@@ -128,3 +128,4 @@ MEDIA_ROOT = "media"
 MEDIA_URL = "media/"
 
 KHALTI_SECRET_KEY = config('KHALTI_SECRET_KEY')
+Nothing to commit
