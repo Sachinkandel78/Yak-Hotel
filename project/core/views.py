@@ -10,6 +10,7 @@ from django.conf import settings
 from .services import LoyaltyPoint
 from accounts.models import Wallet
 
+
 def home_view(request):
     return render(request, "core/home.html")
 
@@ -40,7 +41,6 @@ def cart_view(request):
 def order_view(request):
     if request.method == "POST":
         menu_cart = json.loads(request.POST.get("menuCart"))
-        
         
         # print("menu cart", type(menu_cart))
         table_id = request.POST.get("table_id")
@@ -98,25 +98,25 @@ def order_status_view(request, order_id):
 def payment_view(request):
     if request.method == "POST":
         order_id = request.POST.get('order_id')
-    
         
         try:
             order = Order.objects.get(pk=order_id)
         except Order.DoesNotExist:
             messages.error(request, "Payment initiation failed")
             return redirect("order-page")
-
+        
         use_points = request.POST.get('use-points')
+        
         if use_points:
             wallet = request.user.wallet
             paisa = LoyaltyPoint.calculate_paisa(wallet.loyalty_points)
             wallet.loyalty_points = 0
             wallet.save()
-        
         else:
-            paisa = 0
-
+            paisa = 0    
+        
         # return
+        
         
         payment, created = Payment.objects.get_or_create(
             order = order,
