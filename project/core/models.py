@@ -43,6 +43,7 @@ class OrderItem(models.Model):
     total = models.DecimalField()
     order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
     
+    
     def __str__(self):
         return f"{self.menuitem} x {self.quantity} = {self.total}"
     
@@ -61,6 +62,6 @@ class Payment(models.Model):
     pidx = models.CharField(max_length=200, null=True, unique=True)
     
     def __str__(self):
-        return self.id
+        return str(self.id)
 
     
