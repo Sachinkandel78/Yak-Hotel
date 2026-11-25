@@ -43,6 +43,7 @@ class OrderItem(models.Model):
     total = models.DecimalField()
     order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
     
+    
     def __str__(self):
         return f"{self.menuitem} x {self.quantity} = {self.total}"
     
